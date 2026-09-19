@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Gerente</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        label { display: block; margin-top: 10px; }
+        input { padding: 6px; width: 300px; }
+        button { margin-top: 15px; padding: 8px 15px; background: #28a745;
+                 color: white; border: none; border-radius: 3px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1 th:text="${gerente.id == null ? 'Nuevo Gerente' : 'Editar Gerente'}"></h1>
+    <form th:action="@{/gimnasio/gerentes/guardar}" th:object="${gerente}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+        <label>Nombre:</label><input type="text" th:field="*{nombre}"/>
+        <label>Apellido:</label><input type="text" th:field="*{apellido}"/>
+        
+        <label>Teléfono:</label><input type="text" th:field="*{telefono}"/>
+        <label>Correo:</label><input type="email" th:field="*{correo}"/>
+        
+        
+        <button type="submit">Guardar</button>
+    </form>
+    <br><a href="/gimnasio/gerentes">Volver</a>
+</body>
+</html>

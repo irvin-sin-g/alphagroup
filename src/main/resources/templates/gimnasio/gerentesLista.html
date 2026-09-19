@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerentes</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        th { background: #333; color: white; }
+        a.btn { padding: 5px 10px; background: #007bff; color: white;
+                text-decoration: none; border-radius: 3px; margin-right: 5px; }
+        a.del { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>Lista de Gerentes</h1>
+    <a class="btn" th:href="@{/gimnasio/gerentes/nuevo}">+ Nuevo Gerente</a>
+    <br><br>
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>DNI</th>
+                <th>Teléfono</th><th>Correo</th><th>Usuario</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+            <tr th:each="g : ${gerentes}">
+                <td th:text="${g.id}"></td>
+                <td th:text="${g.nombre}"></td>
+                <td th:text="${g.apellido}"></td>
+                
+                <td th:text="${g.telefono}"></td>
+                <td th:text="${g.correo}"></td>
+                
+                <td>
+                    <a class="btn" th:href="@{/gimnasio/gerentes/editar/{id}(id=${g.id})}">Editar</a>
+                    <a class="btn del" th:href="@{/gimnasio/gerentes/eliminar/{id}(id=${g.id})}">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br><a href="/">Volver</a>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recepcionistas</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        th { background: #333; color: white; }
+        a.btn { padding: 5px 10px; background: #007bff; color: white;
+                text-decoration: none; border-radius: 3px; margin-right: 5px; }
+        a.del { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>Lista de Recepcionistas</h1>
+    <a class="btn" th:href="@{/gimnasio/recepcionistas/nuevo}">+ Nuevo Recepcionista</a>
+    <br><br>
+    <table>
+        <thead>
+            <tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>DNI</th>
+                <th>Teléfono</th><th>Correo</th><th>Turno</th><th>Usuario</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+            <tr th:each="r : ${recepcionistas}">
+                <td th:text="${r.id}"></td>
+                <td th:text="${r.nombre}"></td>
+                <td th:text="${r.apellido}"></td>
+                <td th:text="${r.dni}"></td>
+                <td th:text="${r.telefono}"></td>
+                <td th:text="${r.correo}"></td>
+                <td th:text="${r.turno}"></td>
+                <td th:text="${r.usuario}"></td>
+                <td>
+                    <a class="btn" th:href="@{/gimnasio/recepcionistas/editar/{id}(id=${r.id})}">Editar</a>
+                    <a class="btn del" th:href="@{/gimnasio/recepcionistas/eliminar/{id}(id=${r.id})}">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br><a href="/">Volver</a>
+</body>
+</html>

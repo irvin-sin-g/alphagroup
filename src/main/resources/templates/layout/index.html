@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Group | Sistema de Gimnasio</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --negro: #0a0a0f;
+            --carbon: #12121a;
+            --gris: #1c1c28;
+            --naranja: #ff6b1a;
+            --naranja-2: #ff9d2e;
+            --lima: #c6ff3d;
+            --texto: #f2f2f7;
+            --texto-suave: #9a9aad;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--negro);
+            color: var(--texto);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ===== FONDO ANIMADO ===== */
+        .bg-glow {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(255,107,26,.22), transparent 45%),
+                radial-gradient(circle at 85% 15%, rgba(198,255,61,.12), transparent 40%),
+                radial-gradient(circle at 50% 100%, rgba(255,157,46,.15), transparent 50%);
+            animation: flotar 12s ease-in-out infinite alternate;
+        }
+        @keyframes flotar {
+            0%   { transform: scale(1) translateY(0); }
+            100% { transform: scale(1.08) translateY(-20px); }
+        }
+
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(circle at 50% 30%, #000 20%, transparent 75%);
+            -webkit-mask-image: radial-gradient(circle at 50% 30%, #000 20%, transparent 75%);
+        }
+
+        /* ===== NAVBAR ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 6vw;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: rgba(10,10,15,.65);
+            border-bottom: 1px solid rgba(255,255,255,.06);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 1.35rem;
+            letter-spacing: .5px;
+        }
+
+        .logo-mark {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--naranja), var(--naranja-2));
+            box-shadow: 0 0 22px rgba(255,107,26,.55);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #0a0a0f;
+            transform: rotate(-6deg);
+        }
+
+        .logo span { color: var(--naranja); }
+
+        .acciones { display: flex; gap: 12px; }
+
+        .btn {
+            padding: 11px 24px;
+            border-radius: 10px;
+            font-size: .9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: transform .2s, box-shadow .25s, background .25s, border-color .25s, color .25s;
+            font-family: inherit;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--texto);
+            border: 1px solid rgba(255,255,255,.18);
+        }
+        .btn-ghost:hover {
+            border-color: var(--naranja);
+            color: var(--naranja);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            text-align: center;
+            padding: 70px 6vw 40px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            background: rgba(255,107,26,.1);
+            border: 1px solid rgba(255,107,26,.35);
+            color: var(--naranja-2);
+            font-size: .8rem;
+            font-weight: 600;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            margin-bottom: 26px;
+        }
+        .badge::before {
+            content: '';
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--lima);
+            box-shadow: 0 0 10px var(--lima);
+            animation: pulso 1.6s infinite;
+        }
+        @keyframes pulso {
+            0%,100% { opacity: 1; transform: scale(1); }
+            50%     { opacity: .4; transform: scale(1.5); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 4.5vw, 3.4rem);
+            line-height: 1.1;
+            font-weight: 900;
+            letter-spacing: -1.5px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(120deg, var(--naranja), var(--lima));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.05rem;
+            color: var(--texto-suave);
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        /* ===== MÓDULOS ===== */
+        .modulos {
+            padding: 50px 6vw 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .titulo-seccion {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .titulo-seccion span {
+            color: var(--naranja);
+            font-size: .82rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .titulo-seccion h2 {
+            font-size: clamp(1.6rem, 3vw, 2.3rem);
+            font-weight: 800;
+            margin-top: 12px;
+            letter-spacing: -1px;
+        }
+
+        .grid-modulos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 26px;
+        }
+
+        /* ===== TARJETAS ===== */
+        .card {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            color: var(--texto);
+            padding: 34px 28px;
+            border-radius: 20px;
+            background: linear-gradient(160deg, rgba(28,28,40,.9), rgba(18,18,26,.9));
+            border: 1px solid rgba(255,255,255,.07);
+            overflow: hidden;
+            transition: transform .3s, border-color .3s, box-shadow .3s;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--naranja), var(--lima));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .4s;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,107,26,.4);
+            box-shadow: 0 20px 45px rgba(0,0,0,.5);
+        }
+        .card:hover::before { transform: scaleX(1); }
+
+        .card-icono {
+            width: 58px; height: 58px;
+            border-radius: 16px;
+            display: grid; place-items: center;
+            font-size: 1.7rem;
+            margin-bottom: 20px;
+            background: rgba(255,107,26,.1);
+            border: 1px solid rgba(255,107,26,.25);
+        }
+
+        .card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .card p {
+            font-size: .9rem;
+            color: var(--texto-suave);
+            margin-bottom: 20px;
+        }
+
+        .link-activo {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--lima);
+            font-weight: 700;
+            font-size: .9rem;
+            transition: gap .25s;
+        }
+        .card:hover .link-activo { gap: 14px; }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 40px 6vw;
+            border-top: 1px solid rgba(255,255,255,.06);
+            color: var(--texto-suave);
+            font-size: .85rem;
+        }
+        footer strong { color: var(--naranja); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 560px) {
+            header { padding: 14px 5vw; }
+            .logo { font-size: 1.1rem; }
+            .logo-mark { width: 36px; height: 36px; font-size: 1.1rem; }
+            .btn { padding: 9px 16px; font-size: .82rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+
+    <!-- ===== NAVBAR ===== -->
+    <header>
+        <div class="logo">
+            <div class="logo-mark">A</div>
+            ALPHA <span>GROUP</span>
+        </div>
+        <div class="acciones">
+            <button class="btn btn-ghost" type="button">Ingresar</button>
+        </div>
+    </header>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="badge">Sistema de Gestión · Gimnasio</div>
+        <h1>Panel del <em>Gimnasio</em></h1>
+        <p>
+            Administra membresías, recepcionistas y gerentes desde un solo lugar.
+            Módulo de gimnasio disponible en Alpha Group.
+        </p>
+    </section>
+
+    <!-- ===== MÓDULOS ===== -->
+    <section class="modulos">
+        <div class="titulo-seccion">
+            <span>Módulos disponibles</span>
+            <h2>¿Qué deseas gestionar hoy?</h2>
+        </div>
+
+        <div class="grid-modulos">
+
+            <!-- MEMBRESÍAS -->
+            <a href="/gimnasio/membresias" class="card">
+                <div class="card-icono">🎫</div>
+                <h3>Membresías</h3>
+                <p>Registra, actualiza y controla los planes y membresías de los socios.</p>
+                <span class="link-activo">Gestionar membresías →</span>
+            </a>
+
+            <!-- RECEPCIONISTAS -->
+            <a href="/gimnasio/recepcionistas" class="card">
+                <div class="card-icono">🧑‍💼</div>
+                <h3>Recepcionistas</h3>
+                <p>Administra al personal de recepción y sus accesos al sistema.</p>
+                <span class="link-activo">Gestionar recepcionistas →</span>
+            </a>
+
+            <!-- GERENTES -->
+            <a href="/gimnasio/gerentes" class="card">
+                <div class="card-icono">📊</div>
+                <h3>Gerentes</h3>
+                <p>Gestiona a los gerentes, sus credenciales y permisos dentro del sistema.</p>
+                <span class="link-activo">Gestionar gerentes →</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        © 2025 <strong>Alpha Group</strong> — Centro Deportivo · Sistema de Gestión de Gimnasio
+    </footer>
+
+</body>
+</html>
